@@ -1,11 +1,9 @@
 ---
-import Logo from './Logo.astro';
 ---
 
 <footer>
   <a class="logo" href="#top">
-    <Logo variant="light" animated={false} />
-    mightyeyes
+    <img src="/mightyeyes-logo.png" alt="Mighty Eyes" />
   </a>
   <span class="copy">© 2026 · agentic workflows, built by operators</span>
   <a class="mail" href="mailto:hello@mightyeyes.io">hello@mightyeyes.io</a>
@@ -23,14 +21,17 @@ import Logo from './Logo.astro';
     flex-wrap: wrap;
   }
   footer .logo {
-    color: var(--paper);
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 17px;
-    letter-spacing: -0.01em;
     text-decoration: none;
+  }
+  footer .logo img {
+    height: 24px;
+    width: auto;
+    max-width: 140px;
+    display: block;
+    object-fit: contain;
+    filter: invert(1) hue-rotate(180deg);
   }
   .copy {
     font-size: 13px;
