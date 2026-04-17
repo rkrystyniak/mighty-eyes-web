@@ -479,7 +479,7 @@
       }
     }
     if (typingEl) typingEl.remove();
-    await wait(2200);
+    await wait(1500);
   }
 
   async function runScene2Terminal() {
@@ -496,7 +496,7 @@
     await fadeIn(termView);
     // Only part2 animates in line-by-line.
     const part2EndDelay = renderTermItems(termScriptPart2, 0, false);
-    await wait(part2EndDelay + 1500 + 2200);
+    await wait(part2EndDelay + 2200);
   }
 
   async function loop() {
