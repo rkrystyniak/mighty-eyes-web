@@ -4,10 +4,13 @@
 <div class="terminal" id="terminal" aria-hidden="true">
   <div class="term-chrome">
     <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-    <span class="label mono">agent.mightyeyes ~ live</span>
+    <span class="label mono" id="term-label">agent.mightyeyes ~ live</span>
     <span class="status mono">running</span>
   </div>
-  <div id="term-body"></div>
+  <div class="term-stage">
+    <div id="term-body" class="term-view"></div>
+    <div id="chat-body" class="chat-view" hidden></div>
+  </div>
 </div>
 
 <style>
@@ -19,7 +22,7 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 13.5px;
     line-height: 1.7;
-    min-height: 420px;
+    min-height: 520px;
     position: relative;
     box-shadow:
       0 30px 60px -20px rgba(15, 23, 41, 0.35),
@@ -61,7 +64,9 @@
     font-size: 11px;
     color: var(--muted-2);
     letter-spacing: 0.05em;
+    transition: opacity .25s ease;
   }
+  .term-chrome .label.swapping { opacity: 0; }
   .term-chrome .status {
     margin-left: auto;
     font-size: 11px;
@@ -80,10 +85,33 @@
     animation: pulse-dot 1.8s ease-in-out infinite;
   }
 
+  .term-stage {
+    position: relative;
+    min-height: 420px;
+  }
+  .term-view, .chat-view {
+    position: absolute;
+    inset: 0;
+    transition: opacity .35s ease;
+  }
+  .term-view[hidden], .chat-view[hidden] {
+    display: block;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+  .term-view.fading, .chat-view.fading {
+    opacity: 0;
+  }
+
   /* Lines are appended from script; global selectors so dynamic content keeps styling. */
   :global(.term-line) {
     opacity: 0;
     animation: term-line-in .4s ease-out forwards;
+  }
+  :global(.term-line.static) {
+    opacity: 1;
+    animation: none;
   }
   :global(.term-line .prompt) { color: var(--amber); margin-right: 8px; }
   :global(.term-line .out) { color: var(--muted-2); padding-left: 20px; display: block; }
@@ -100,16 +128,141 @@
     margin-left: 2px;
     animation: blink 1s step-end infinite;
   }
+
+  /* Chat view (Slack-style DM) */
+  .chat-view {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  :global(.chat-msg) {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 10px;
+    padding: 6px 0;
+    opacity: 0;
+    animation: term-line-in .4s ease-out forwards;
+  }
+  :global(.chat-avatar) {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #2a3550;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+  :global(.chat-avatar img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  :global(.chat-avatar.priya) {
+    background: linear-gradient(135deg, #f59fa5 0%, #7dd3c0 100%);
+  }
+  :global(.chat-meta) {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 2px;
+  }
+  :global(.chat-name) {
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--paper);
+  }
+  :global(.chat-name.me) { color: var(--amber); }
+  :global(.chat-name.priya) { color: #7dd3c0; }
+  :global(.chat-time) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--muted-2);
+    opacity: 0.7;
+  }
+  :global(.chat-bubble) {
+    color: var(--paper);
+    opacity: 0.92;
+  }
+  :global(.chat-bubble .code) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--amber);
+  }
+  :global(.chat-typing) {
+    display: inline-flex;
+    gap: 4px;
+    padding: 8px 0 2px;
+  }
+  :global(.chat-typing span) {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted-2);
+    opacity: 0.4;
+    animation: chat-dot 1.2s ease-in-out infinite;
+  }
+  :global(.chat-typing span:nth-child(2)) { animation-delay: 0.15s; }
+  :global(.chat-typing span:nth-child(3)) { animation-delay: 0.3s; }
+
+  :global(.refund-chip) {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    margin-top: 4px;
+    background: rgba(111, 207, 151, 0.12);
+    border: 1px solid rgba(111, 207, 151, 0.45);
+    border-radius: 6px;
+    color: #8fe3b3;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  :global(.refund-chip::before) {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: #6fcf97;
+    box-shadow: inset 0 0 0 2px rgba(15, 23, 41, 0.35);
+    flex: 0 0 14px;
+  }
+
+  @keyframes chat-dot {
+    0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(-3px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.chat-msg), :global(.term-line) {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+    :global(.chat-typing span) { animation: none; opacity: 0.6; }
+    .term-view, .chat-view { transition: none; }
+  }
 </style>
 
 <script>
   const termBody = document.getElementById('term-body');
+  const chatBody = document.getElementById('chat-body');
+  const termLabel = document.getElementById('term-label');
+  const termView = termBody;
+  const chatView = chatBody;
 
   type TermItem =
     | { type: 'cmd' | 'out' | 'ok'; text: string }
     | { type: 'gap' | 'cursor' };
 
-  const termScript: TermItem[] = [
+  const termScriptPart1: TermItem[] = [
     { type: 'cmd', text: 'agent.listen()' },
     { type: 'out', text: 'new support email · customer: acme.co' },
     { type: 'gap' },
@@ -122,19 +275,63 @@
     { type: 'ok', text: '✓ order #41229 located' },
     { type: 'ok', text: '✓ package stuck at facility · eta +3 days' },
     { type: 'ok', text: '✓ draft sent to @priya for review' },
+  ];
+
+  const termScriptPart2: TermItem[] = [
+    { type: 'gap' },
+    { type: 'cmd', text: 'agent.act(refund)' },
+    { type: 'ok', text: '✓ refund $210.00 issued to acme.co' },
+    { type: 'ok', text: '✓ confirmation email sent to customer' },
     { type: 'gap' },
     { type: 'cursor' },
+  ];
+
+  type ChatItem =
+    | { type: 'msg'; who: 'me' | 'priya'; name: string; time: string; html: string; isChip?: boolean }
+    | { type: 'typing'; who: 'me' | 'priya'; ms: number };
+
+  const chatScript: ChatItem[] = [
+    {
+      type: 'msg',
+      who: 'me',
+      name: 'MightyEyes',
+      time: '10:42 AM',
+      html: 'Hey Priya — I drafted a reply for <span class="code">#41229</span> (acme.co). Package stuck at facility, ETA +3 days. Customer asked for a refund (<span class="code">$210.00</span>).',
+    },
+    {
+      type: 'msg',
+      who: 'me',
+      name: 'MightyEyes',
+      time: '10:42 AM',
+      html: 'Approve refund, or send the apology-only draft?',
+    },
+    { type: 'typing', who: 'priya', ms: 1400 },
+    {
+      type: 'msg',
+      who: 'priya',
+      name: 'Priya Kapoor',
+      time: '10:43 AM',
+      html: '<span class="refund-chip">Accept Refund</span>',
+      isChip: true,
+    },
+    {
+      type: 'msg',
+      who: 'me',
+      name: 'MightyEyes',
+      time: '10:43 AM',
+      html: 'On it — issuing refund now. ✓',
+    },
   ];
 
   function escapeHtml(s: string) {
     return s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]!));
   }
 
-  function addLine(html: string, delay: number) {
+  function addLine(html: string, delay: number, staticLine = false) {
     if (!termBody) return;
     const div = document.createElement('div');
-    div.className = 'term-line';
-    div.style.animationDelay = delay + 'ms';
+    div.className = staticLine ? 'term-line static' : 'term-line';
+    if (!staticLine) div.style.animationDelay = delay + 'ms';
     div.innerHTML = html;
     termBody.appendChild(div);
   }
@@ -146,30 +343,171 @@
     termBody.appendChild(g);
   }
 
-  function runTerminal() {
-    if (!termBody) return;
-    termBody.innerHTML = '';
-    let t = 0;
-    termScript.forEach((item) => {
+  function renderTermItems(items: TermItem[], startDelay = 0, staticLines = false): number {
+    let t = startDelay;
+    items.forEach((item) => {
       if (item.type === 'cmd') {
-        addLine('<span class="prompt">❯</span>' + escapeHtml(item.text), t);
+        addLine('<span class="prompt">❯</span>' + escapeHtml(item.text), t, staticLines);
         t += 280;
       } else if (item.type === 'out') {
-        addLine('<span class="out">' + escapeHtml(item.text) + '</span>', t);
+        addLine('<span class="out">' + escapeHtml(item.text) + '</span>', t, staticLines);
         t += 180;
       } else if (item.type === 'ok') {
-        addLine('<span class="out ok">' + escapeHtml(item.text) + '</span>', t);
+        addLine('<span class="out ok">' + escapeHtml(item.text) + '</span>', t, staticLines);
         t += 220;
       } else if (item.type === 'gap') {
         addGap();
       } else if (item.type === 'cursor') {
-        addLine('<span class="prompt">❯</span><span class="cursor"></span>', t);
+        addLine('<span class="prompt">❯</span><span class="cursor"></span>', t, staticLines);
       }
+    });
+    return t;
+  }
+
+  function swapLabel(nextText: string) {
+    if (!termLabel) return;
+    termLabel.classList.add('swapping');
+    window.setTimeout(() => {
+      termLabel.textContent = nextText;
+      termLabel.classList.remove('swapping');
+    }, 240);
+  }
+
+  function makeAvatar(who: 'me' | 'priya'): string {
+    if (who === 'me') {
+      return '<div class="chat-avatar"><img src="/favicon.png" alt="" /></div>';
+    }
+    return '<div class="chat-avatar priya">PK</div>';
+  }
+
+  function addChatMsg(item: Extract<ChatItem, { type: 'msg' }>) {
+    if (!chatBody) return;
+    const row = document.createElement('div');
+    row.className = 'chat-msg';
+    row.innerHTML =
+      makeAvatar(item.who) +
+      '<div>' +
+        '<div class="chat-meta">' +
+          '<span class="chat-name ' + item.who + '">' + escapeHtml(item.name) + '</span>' +
+          '<span class="chat-time">' + escapeHtml(item.time) + '</span>' +
+        '</div>' +
+        '<div class="chat-bubble">' + item.html + '</div>' +
+      '</div>';
+    chatBody.appendChild(row);
+  }
+
+  function addTyping(who: 'me' | 'priya'): HTMLElement | null {
+    if (!chatBody) return null;
+    const row = document.createElement('div');
+    row.className = 'chat-msg';
+    row.innerHTML =
+      makeAvatar(who) +
+      '<div>' +
+        '<div class="chat-meta">' +
+          '<span class="chat-name ' + who + '">' + (who === 'priya' ? 'Priya Kapoor' : 'MightyEyes') + '</span>' +
+          '<span class="chat-time">typing…</span>' +
+        '</div>' +
+        '<div class="chat-typing"><span></span><span></span><span></span></div>' +
+      '</div>';
+    chatBody.appendChild(row);
+    return row;
+  }
+
+  function fadeOut(el: HTMLElement | null): Promise<void> {
+    return new Promise((resolve) => {
+      if (!el) { resolve(); return; }
+      el.classList.add('fading');
+      window.setTimeout(resolve, 360);
     });
   }
 
-  if (termBody) {
-    setTimeout(runTerminal, 800);
-    setInterval(runTerminal, 14000);
+  function fadeIn(el: HTMLElement | null): Promise<void> {
+    return new Promise((resolve) => {
+      if (!el) { resolve(); return; }
+      el.hidden = false;
+      // allow layout before removing fading class
+      requestAnimationFrame(() => {
+        el.classList.remove('fading');
+        window.setTimeout(resolve, 360);
+      });
+    });
+  }
+
+  function hide(el: HTMLElement | null) {
+    if (!el) return;
+    el.hidden = true;
+  }
+
+  function wait(ms: number): Promise<void> {
+    return new Promise((resolve) => window.setTimeout(resolve, ms));
+  }
+
+  async function runScene1Terminal() {
+    if (!termView) return;
+    termView.innerHTML = '';
+    hide(chatView);
+    termView.classList.remove('fading');
+    termView.hidden = false;
+    swapLabel('agent.mightyeyes ~ live');
+    const endT = renderTermItems(termScriptPart1, 0);
+    await wait(endT + 1400);
+  }
+
+  async function runChat() {
+    if (!chatView) return;
+    // fade out terminal
+    await fadeOut(termView);
+    hide(termView);
+    chatView.innerHTML = '';
+    chatView.classList.add('fading');
+    swapLabel('#dm-priya · slack');
+    await wait(80);
+    await fadeIn(chatView);
+
+    let typingEl: HTMLElement | null = null;
+    for (const item of chatScript) {
+      if (item.type === 'msg') {
+        if (typingEl) {
+          typingEl.remove();
+          typingEl = null;
+        }
+        addChatMsg(item);
+        await wait(item.isChip ? 900 : 1100);
+      } else if (item.type === 'typing') {
+        typingEl = addTyping(item.who);
+        await wait(item.ms);
+      }
+    }
+    if (typingEl) typingEl.remove();
+    await wait(1500);
+  }
+
+  async function runScene2Terminal() {
+    if (!termView) return;
+    await fadeOut(chatView);
+    hide(chatView);
+    // Pre-render part1 as static (already-present) content while view is still hidden,
+    // so when it fades back in, those lines appear intact — no re-animation.
+    termView.innerHTML = '';
+    renderTermItems(termScriptPart1, 0, true);
+    termView.classList.add('fading');
+    swapLabel('agent.mightyeyes ~ live');
+    await wait(80);
+    await fadeIn(termView);
+    // Only part2 animates in line-by-line.
+    const part2EndDelay = renderTermItems(termScriptPart2, 0, false);
+    await wait(part2EndDelay + 2200);
+  }
+
+  async function loop() {
+    while (true) {
+      await runScene1Terminal();
+      await runChat();
+      await runScene2Terminal();
+    }
+  }
+
+  if (termBody && chatBody) {
+    window.setTimeout(loop, 800);
   }
 </script>

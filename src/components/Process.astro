@@ -36,15 +36,11 @@ const steps = [
           From idea to impact <span class="serif" style="font-style:italic; color:var(--amber);">in four steps</span>.
         </h2>
       </div>
-      <p class="aside" style="color:var(--muted-2);">
-        No $50k discovery decks. No juniors-on-your-project. Working agents in weeks, not quarters.
-      </p>
     </div>
 
     <div class="steps">
       {steps.map((s) => (
         <div class={`step reveal-up ${s.delayClass}`}>
-          <div class="step-dot"></div>
           <div class="num">{s.num}</div>
           <h3>{s.title}</h3>
           <p>{s.body}</p>
@@ -58,7 +54,6 @@ const steps = [
   .process {
     background: var(--ink);
     color: var(--paper);
-    border-radius: 32px 32px 0 0;
     overflow: hidden;
     position: relative;
   }
@@ -141,6 +136,6 @@ const steps = [
   }
 
   @media (max-width: 960px) {
-    .steps { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .steps { grid-template-columns: 1fr; gap: 16px; }
   }
 </style>

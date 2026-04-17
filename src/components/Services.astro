@@ -13,17 +13,17 @@ const services = [
   {
     num: '03',
     title: 'Workflow Automation',
-    blurb: 'The unsexy pipes: webhooks, queues, retries, guardrails — the stuff that keeps agents honest.',
+    blurb: 'Have deterministic workflows you don\'t want to do anymore? We will automate them for you.',
   },
   {
     num: '04',
     title: 'Integrations',
-    blurb: 'HubSpot, Slack, Stripe, your weird internal API — we wire it all in.',
+    blurb: 'HubSpot, Slack, Stripe, your own internal API — we wire it all in.',
   },
   {
     num: '05',
     title: 'AI Consulting',
-    blurb: 'Not sure where to start? A short engagement to map the highest-leverage opportunities.',
+    blurb: 'Not sure where to start or just want advice on how to improve? We are here to guide you and your team.',
   },
 ];
 ---
@@ -37,9 +37,6 @@ const services = [
           Five services, <span class="serif" style="font-style:italic; color:var(--amber-dark);">one team</span>, zero fluff.
         </h2>
       </div>
-      <p class="aside">
-        Pragmatic agent systems shipped by operators who've done this before. Pick one workflow, or let's map the whole thing.
-      </p>
     </div>
 
     <div class="service-list">
@@ -82,13 +79,14 @@ const services = [
     grid-template-columns: 60px 1.2fr 1.8fr auto;
     gap: 32px;
     align-items: center;
-    padding: 34px 8px;
+    padding: 34px 24px;
     border-top: 1px solid var(--line);
     position: relative;
     cursor: pointer;
-    transition: padding .4s cubic-bezier(.2, .7, .2, 1);
     text-decoration: none;
+    color: var(--ink);
   }
+  .service-row:visited { color: var(--ink); }
   .service-row:last-child { border-bottom: 1px solid var(--line); }
   .service-row .num {
     font-family: 'JetBrains Mono', monospace;
@@ -131,7 +129,6 @@ const services = [
     z-index: -1;
   }
   .service-row:hover::before { transform: scaleY(1); transform-origin: top; }
-  .service-row:hover { padding-left: 24px; padding-right: 24px; }
   .service-row:hover h3 { color: var(--ink); }
   .service-row:hover .num,
   .service-row:hover p { color: var(--ink); }
@@ -140,13 +137,36 @@ const services = [
     color: var(--amber);
     border-color: var(--ink);
   }
-  .service-row:hover .go svg { transform: translateX(3px) translateY(-3px); }
 
   @media (max-width: 960px) {
     .service-row {
-      grid-template-columns: 40px 1fr auto;
-      gap: 16px;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas:
+        "num title go"
+        "blurb blurb blurb";
+      column-gap: 16px;
+      row-gap: 14px;
+      padding: 26px 4px;
+      align-items: center;
     }
-    .service-row p { display: none; }
+    .service-row .num { grid-area: num; }
+    .service-row h3 { grid-area: title; font-size: 26px; }
+    .service-row .go { grid-area: go; width: 38px; height: 38px; }
+    .service-row p {
+      grid-area: blurb;
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+    .service-row::before { display: none; }
+    .service-row:hover::before { transform: none; }
+    .service-row:hover h3,
+    .service-row:hover .num,
+    .service-row:hover p { color: inherit; }
+    .service-row:hover .go {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--line-strong);
+    }
+    .service-row:hover .go svg { transform: none; }
   }
 </style>

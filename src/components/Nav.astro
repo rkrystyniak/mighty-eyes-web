@@ -1,11 +1,9 @@
 ---
-import Logo from './Logo.astro';
 ---
 
 <nav class="nav" id="nav">
   <a href="#top" class="logo">
-    <Logo variant="dark" animated={true} />
-    mightyeyes
+    <img src="/mightyeyes-logo.png" alt="Mighty Eyes" />
   </a>
   <div class="nav-links">
     <a href="#services">Services</a>
@@ -44,12 +42,14 @@ import Logo from './Logo.astro';
   .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 17px;
-    letter-spacing: -0.01em;
-    color: var(--ink);
     text-decoration: none;
+  }
+  .logo img {
+    height: 28px;
+    width: auto;
+    max-width: 160px;
+    display: block;
+    object-fit: contain;
   }
 
   .nav-links {
@@ -91,5 +91,6 @@ import Logo from './Logo.astro';
   @media (max-width: 960px) {
     .nav, .nav.scrolled { padding: 14px 20px; }
     .nav-links { display: none; }
+    .logo img { height: 24px; }
   }
 </style>
