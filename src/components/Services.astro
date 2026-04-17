@@ -84,7 +84,9 @@ const services = [
     position: relative;
     cursor: pointer;
     text-decoration: none;
+    color: var(--ink);
   }
+  .service-row:visited { color: var(--ink); }
   .service-row:last-child { border-bottom: 1px solid var(--line); }
   .service-row .num {
     font-family: 'JetBrains Mono', monospace;
@@ -138,9 +140,33 @@ const services = [
 
   @media (max-width: 960px) {
     .service-row {
-      grid-template-columns: 40px 1fr auto;
-      gap: 16px;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas:
+        "num title go"
+        "blurb blurb blurb";
+      column-gap: 16px;
+      row-gap: 14px;
+      padding: 26px 4px;
+      align-items: center;
     }
-    .service-row p { display: none; }
+    .service-row .num { grid-area: num; }
+    .service-row h3 { grid-area: title; font-size: 26px; }
+    .service-row .go { grid-area: go; width: 38px; height: 38px; }
+    .service-row p {
+      grid-area: blurb;
+      font-size: 14.5px;
+      line-height: 1.5;
+    }
+    .service-row::before { display: none; }
+    .service-row:hover::before { transform: none; }
+    .service-row:hover h3,
+    .service-row:hover .num,
+    .service-row:hover p { color: inherit; }
+    .service-row:hover .go {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--line-strong);
+    }
+    .service-row:hover .go svg { transform: none; }
   }
 </style>
