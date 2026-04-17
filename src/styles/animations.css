@@ -1,0 +1,57 @@
+/* Shared keyframes + scroll-reveal helper used across components. */
+
+@keyframes iris-scan {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(-2px, 0); }
+  50%      { transform: translate(0, 0); }
+  75%      { transform: translate(2px, 0); }
+}
+
+@keyframes rise { to { transform: translateY(0); } }
+
+@keyframes wipe { to { transform: scaleX(1); } }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes term-in {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes term-line-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-dot { 50% { opacity: 0.45; } }
+
+@keyframes blink { 50% { opacity: 0; } }
+
+@keyframes scroll-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+/* Scroll-reveal helper — opacity/transform that .in flips on.
+   Used by multiple components; the IntersectionObserver lives in src/scripts/reveal.ts. */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity .9s cubic-bezier(.2, .7, .2, 1),
+    transform .9s cubic-bezier(.2, .7, .2, 1);
+}
+.reveal-up.in { opacity: 1; transform: translateY(0); }
+.reveal-up.d1 { transition-delay: .08s; }
+.reveal-up.d2 { transition-delay: .16s; }
+.reveal-up.d3 { transition-delay: .24s; }
+.reveal-up.d4 { transition-delay: .32s; }

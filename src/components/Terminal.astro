@@ -1,0 +1,175 @@
+---
+---
+
+<div class="terminal" id="terminal" aria-hidden="true">
+  <div class="term-chrome">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <span class="label mono">agent.mightyeyes ~ live</span>
+    <span class="status mono">running</span>
+  </div>
+  <div id="term-body"></div>
+</div>
+
+<style>
+  .terminal {
+    background: linear-gradient(180deg, #1A2440, #0F1729);
+    color: var(--paper);
+    border-radius: 14px;
+    padding: 18px 22px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    line-height: 1.7;
+    min-height: 420px;
+    position: relative;
+    box-shadow:
+      0 30px 60px -20px rgba(15, 23, 41, 0.35),
+      0 10px 24px -10px rgba(15, 23, 41, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    opacity: 0;
+    transform: translateY(20px) scale(.98);
+    animation: term-in .9s cubic-bezier(.2, .7, .2, 1) .5s forwards;
+    overflow: hidden;
+  }
+  .terminal::before {
+    content: "";
+    position: absolute;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 20%, rgba(245, 159, 10, 0.12), transparent 40%);
+    pointer-events: none;
+  }
+
+  .term-chrome {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(185, 189, 196, 0.12);
+    margin-bottom: 16px;
+  }
+  .term-chrome .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #2a3550;
+  }
+  .term-chrome .dot:first-child { background: var(--amber); }
+  .term-chrome .label {
+    margin-left: 12px;
+    font-size: 11px;
+    color: var(--muted-2);
+    letter-spacing: 0.05em;
+  }
+  .term-chrome .status {
+    margin-left: auto;
+    font-size: 11px;
+    color: #6fcf97;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .term-chrome .status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #6fcf97;
+    box-shadow: 0 0 8px #6fcf97;
+    animation: pulse-dot 1.8s ease-in-out infinite;
+  }
+
+  /* Lines are appended from script; global selectors so dynamic content keeps styling. */
+  :global(.term-line) {
+    opacity: 0;
+    animation: term-line-in .4s ease-out forwards;
+  }
+  :global(.term-line .prompt) { color: var(--amber); margin-right: 8px; }
+  :global(.term-line .out) { color: var(--muted-2); padding-left: 20px; display: block; }
+  :global(.term-line .hi) { color: var(--amber); }
+  :global(.term-line .ok) { color: #6fcf97; }
+  :global(.term-gap) { height: 10px; }
+
+  :global(.cursor) {
+    display: inline-block;
+    width: 9px;
+    height: 16px;
+    background: var(--amber);
+    vertical-align: -2px;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+  }
+</style>
+
+<script>
+  const termBody = document.getElementById('term-body');
+
+  type TermItem =
+    | { type: 'cmd' | 'out' | 'ok'; text: string }
+    | { type: 'gap' | 'cursor' };
+
+  const termScript: TermItem[] = [
+    { type: 'cmd', text: 'agent.listen()' },
+    { type: 'out', text: 'new support email · customer: acme.co' },
+    { type: 'gap' },
+    { type: 'cmd', text: 'agent.plan()' },
+    { type: 'out', text: '1. look up order in shopify' },
+    { type: 'out', text: '2. check shipping via easypost' },
+    { type: 'out', text: '3. draft reply, ask human if refund > $200' },
+    { type: 'gap' },
+    { type: 'cmd', text: 'agent.act()' },
+    { type: 'ok', text: '✓ order #41229 located' },
+    { type: 'ok', text: '✓ package stuck at facility · eta +3 days' },
+    { type: 'ok', text: '✓ draft sent to @priya for review' },
+    { type: 'gap' },
+    { type: 'cursor' },
+  ];
+
+  function escapeHtml(s: string) {
+    return s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]!));
+  }
+
+  function addLine(html: string, delay: number) {
+    if (!termBody) return;
+    const div = document.createElement('div');
+    div.className = 'term-line';
+    div.style.animationDelay = delay + 'ms';
+    div.innerHTML = html;
+    termBody.appendChild(div);
+  }
+
+  function addGap() {
+    if (!termBody) return;
+    const g = document.createElement('div');
+    g.className = 'term-gap';
+    termBody.appendChild(g);
+  }
+
+  function runTerminal() {
+    if (!termBody) return;
+    termBody.innerHTML = '';
+    let t = 0;
+    termScript.forEach((item) => {
+      if (item.type === 'cmd') {
+        addLine('<span class="prompt">❯</span>' + escapeHtml(item.text), t);
+        t += 280;
+      } else if (item.type === 'out') {
+        addLine('<span class="out">' + escapeHtml(item.text) + '</span>', t);
+        t += 180;
+      } else if (item.type === 'ok') {
+        addLine('<span class="out ok">' + escapeHtml(item.text) + '</span>', t);
+        t += 220;
+      } else if (item.type === 'gap') {
+        addGap();
+      } else if (item.type === 'cursor') {
+        addLine('<span class="prompt">❯</span><span class="cursor"></span>', t);
+      }
+    });
+  }
+
+  if (termBody) {
+    setTimeout(runTerminal, 800);
+    setInterval(runTerminal, 14000);
+  }
+</script>

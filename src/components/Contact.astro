@@ -1,0 +1,297 @@
+---
+---
+
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="reveal-up">
+      <div class="eyebrow-light">Let's talk</div>
+      <h2 style="margin-top:18px;">
+        Tell us about<br />your <span class="serif" style="font-style:italic; color:var(--amber);">project</span>.
+      </h2>
+      <p class="lead">
+        No pitch decks, no 45-minute intro call. Fill this out and we'll respond within one business day with a concrete next step.
+      </p>
+      <div class="promise">
+        <div class="promise-item"><span class="check">✓</span> Response within 1 business day</div>
+        <div class="promise-item"><span class="check">✓</span> Free 30-minute scoping call</div>
+        <div class="promise-item"><span class="check">✓</span> No sales sequence, we promise</div>
+      </div>
+    </div>
+
+    <form class="form reveal-up d1" id="leadForm" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label for="lead-name">Name <span class="req">*</span></label>
+          <input id="lead-name" type="text" name="name" placeholder="Your name" required />
+          <div class="err-msg"></div>
+        </div>
+        <div class="field">
+          <label for="lead-email">Email <span class="req">*</span></label>
+          <input id="lead-email" type="email" name="email" placeholder="you@company.com" required />
+          <div class="err-msg"></div>
+        </div>
+        <div class="field">
+          <label for="lead-size">Company Size</label>
+          <select id="lead-size" name="size">
+            <option value="">Select…</option>
+            <option>Just me</option>
+            <option>2–10</option>
+            <option>11–50</option>
+            <option>51–200</option>
+            <option>200+</option>
+          </select>
+          <div class="err-msg"></div>
+        </div>
+        <div class="field">
+          <label for="lead-timeline">Timeline</label>
+          <select id="lead-timeline" name="timeline">
+            <option value="">Select…</option>
+            <option>ASAP</option>
+            <option>Next 1–3 months</option>
+            <option>3–6 months</option>
+            <option>Just exploring</option>
+          </select>
+          <div class="err-msg"></div>
+        </div>
+        <div class="field full">
+          <label for="lead-usecase">Use Case <span class="req">*</span></label>
+          <textarea id="lead-usecase" name="usecase" placeholder="What workflow are you trying to automate?" required></textarea>
+          <div class="err-msg"></div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Let's Talk About Your Project <span class="arrow">→</span>
+      </button>
+
+      <div class="thanks" id="thanks">
+        <h3>Thanks — we'll be in touch.</h3>
+        <p>We read every note ourselves. Expect a reply within one business day.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 120px 40px 100px;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 40% 50% at 90% 20%, rgba(245, 159, 10, 0.18), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 90%, rgba(245, 159, 10, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .contact :global(h2),
+  .contact :global(.serif) { color: var(--paper); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 80px;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+  .contact :global(h2) {
+    font-size: clamp(42px, 5vw, 68px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  .lead {
+    color: var(--muted-2);
+    font-size: 17px;
+    max-width: 400px;
+    margin-top: 22px;
+  }
+
+  .promise {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .promise-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted-2);
+    font-size: 14px;
+  }
+  .promise-item .check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(245, 159, 10, 0.15);
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .form {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 36px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .field { display: flex; flex-direction: column; }
+  .field.full { grid-column: 1 / -1; }
+  .field label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .field label .req { color: var(--amber); margin-left: 3px; }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    background: rgba(244, 246, 251, 0.04);
+    border: 1px solid rgba(185, 189, 196, 0.2);
+    color: var(--paper);
+    font-family: inherit;
+    font-size: 15px;
+    padding: 13px 16px;
+    border-radius: 10px;
+    transition: border-color .2s, background .2s;
+    outline: none;
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 110px;
+    font-family: inherit;
+  }
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23B9BDC4' d='M6 8L0 0h12z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color: rgba(185, 189, 196, 0.5); }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--amber);
+    background: rgba(245, 159, 10, 0.05);
+  }
+  .field.error input,
+  .field.error select,
+  .field.error textarea {
+    border-color: #ff6b6b;
+    animation: shake .3s ease;
+  }
+  .field .err-msg {
+    font-size: 12px;
+    color: #ff9999;
+    margin-top: 6px;
+    min-height: 16px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .form :global(.btn-primary) {
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+    padding: 18px 26px;
+    font-size: 16px;
+  }
+
+  .thanks { display: none; text-align: center; padding: 40px 20px; }
+  .thanks.on { display: block; animation: fade-up .6s ease-out; }
+  .thanks h3 {
+    color: var(--paper);
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .thanks p { color: var(--muted-2); }
+  .form.sent .form-grid,
+  .form.sent :global(.btn-primary) { display: none; }
+
+  @media (max-width: 960px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .form { padding: 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('leadForm') as HTMLFormElement | null;
+  const thanks = document.getElementById('thanks');
+
+  function setError(field: Element, msg: string) {
+    field.classList.toggle('error', !!msg);
+    const err = field.querySelector('.err-msg');
+    if (err) err.textContent = msg || '';
+  }
+
+  if (form && thanks) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let ok = true;
+
+      const fields = form.querySelectorAll('.field');
+      fields.forEach((f) => setError(f, ''));
+
+      const name = form.elements.namedItem('name') as HTMLInputElement;
+      const email = form.elements.namedItem('email') as HTMLInputElement;
+      const usecase = form.elements.namedItem('usecase') as HTMLTextAreaElement;
+
+      if (!name.value.trim()) {
+        setError(name.closest('.field')!, 'Your name, please.');
+        ok = false;
+      }
+      if (!email.value.trim()) {
+        setError(email.closest('.field')!, 'Email is required.');
+        ok = false;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        setError(email.closest('.field')!, 'That email looks off.');
+        ok = false;
+      }
+      if (!usecase.value.trim()) {
+        setError(usecase.closest('.field')!, 'Tell us a little about the workflow.');
+        ok = false;
+      }
+
+      if (!ok) return;
+
+      const payload = Object.fromEntries(new FormData(form));
+
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Request failed');
+        form.classList.add('sent');
+        thanks.classList.add('on');
+      } catch {
+        setError(usecase.closest('.field')!, 'Something went wrong. Email hello@mightyeyes.io instead.');
+      }
+    });
+
+    form.querySelectorAll('input, select, textarea').forEach((el) => {
+      el.addEventListener('input', () => setError(el.closest('.field')!, ''));
+    });
+  }
+</script>

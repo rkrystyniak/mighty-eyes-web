@@ -1,0 +1,146 @@
+---
+const steps = [
+  {
+    num: 'STEP 01',
+    title: 'Discovery',
+    body: 'We learn your business inside and out — workflows, pain points, and goals — to find the highest-impact AI opportunities.',
+    delayClass: '',
+  },
+  {
+    num: 'STEP 02',
+    title: 'Strategy',
+    body: 'We design the right solution with a clear roadmap, timeline, and ROI projection so you know exactly what to expect.',
+    delayClass: 'd1',
+  },
+  {
+    num: 'STEP 03',
+    title: 'Build',
+    body: 'We implement and integrate your AI solution with your existing tools and workflows. No disruption, just results.',
+    delayClass: 'd2',
+  },
+  {
+    num: 'STEP 04',
+    title: 'Support',
+    body: 'Ongoing optimization, monitoring, and scaling to make sure your AI keeps delivering as your business grows.',
+    delayClass: 'd3',
+  },
+];
+---
+
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="section-head reveal-up">
+      <div>
+        <div class="eyebrow-light">The process</div>
+        <h2 style="margin-top:18px;">
+          From idea to impact <span class="serif" style="font-style:italic; color:var(--amber);">in four steps</span>.
+        </h2>
+      </div>
+      <p class="aside" style="color:var(--muted-2);">
+        No $50k discovery decks. No juniors-on-your-project. Working agents in weeks, not quarters.
+      </p>
+    </div>
+
+    <div class="steps">
+      {steps.map((s) => (
+        <div class={`step reveal-up ${s.delayClass}`}>
+          <div class="step-dot"></div>
+          <div class="num">{s.num}</div>
+          <h3>{s.title}</h3>
+          <p>{s.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .process {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 32px 32px 0 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .process::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 80% 10%, rgba(245, 159, 10, 0.12), transparent 60%),
+      radial-gradient(ellipse 40% 30% at 10% 90%, rgba(245, 159, 10, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .process :global(h2),
+  .process :global(.eyebrow-light) { color: var(--paper); }
+  .process :global(.section-head p) { color: var(--muted-2); }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    margin-bottom: 70px;
+    flex-wrap: wrap;
+  }
+  .section-head h2 { max-width: 780px; color: var(--paper); }
+  .section-head .aside {
+    color: var(--muted-2);
+    font-size: 15px;
+    max-width: 320px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    position: relative;
+  }
+  .step {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 32px 28px;
+    position: relative;
+    transition:
+      background .3s ease,
+      border-color .3s ease,
+      transform .3s ease;
+  }
+  .step:hover {
+    background: rgba(245, 159, 10, 0.08);
+    border-color: rgba(245, 159, 10, 0.35);
+    transform: translateY(-4px);
+  }
+  .step .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+  }
+  .step h3 {
+    color: var(--paper);
+    font-size: 28px;
+    margin: 14px 0 12px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .step p { color: var(--muted-2); font-size: 14.5px; line-height: 1.55; }
+  .step-dot {
+    position: absolute;
+    top: 32px;
+    right: 28px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(245, 159, 10, 0.3);
+  }
+  .step:nth-child(1) .step-dot {
+    background: var(--amber);
+    box-shadow: 0 0 16px var(--amber);
+  }
+
+  @media (max-width: 960px) {
+    .steps { grid-template-columns: 1fr 1fr; gap: 16px; }
+  }
+</style>

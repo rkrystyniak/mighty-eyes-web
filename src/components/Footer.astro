@@ -1,0 +1,53 @@
+---
+import Logo from './Logo.astro';
+---
+
+<footer>
+  <a class="logo" href="#top">
+    <Logo variant="light" animated={false} />
+    mightyeyes
+  </a>
+  <span class="copy">© 2026 · agentic workflows, built by operators</span>
+  <a class="mail" href="mailto:hello@mightyeyes.io">hello@mightyeyes.io</a>
+</footer>
+
+<style>
+  footer {
+    background: var(--ink);
+    color: var(--muted-2);
+    padding: 32px 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  footer .logo {
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .copy {
+    font-size: 13px;
+    color: var(--muted-2);
+  }
+  .mail {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted-2);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .mail:hover { color: var(--amber); }
+
+  @media (max-width: 960px) {
+    footer { padding: 24px 20px; }
+    .mail { margin-left: 0; width: 100%; }
+  }
+</style>

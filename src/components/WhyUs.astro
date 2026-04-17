@@ -1,0 +1,83 @@
+---
+const creds = [
+  { big: '20+', lbl: 'years shipping commercial software' },
+  { big: 'Exits', lbl: 'founded, scaled, and sold' },
+  { big: 'P&L', lbl: "operators who've owned the number" },
+  { big: '3–6 wk', lbl: 'typical time to a shipped agent' },
+];
+---
+
+<section class="why" id="why">
+  <div class="wrap why-grid">
+    <div class="reveal-up">
+      <div class="eyebrow">Why MightyEyes</div>
+      <blockquote style="margin-top:24px;">
+        Operators, not<br />consultants. We've <em>built,<br />shipped, and sold</em><br />software at scale.
+      </blockquote>
+    </div>
+    <div class="reveal-up d1">
+      <p style="font-size:17px; color:var(--muted); max-width:440px;">
+        We've built and exited technology companies, managed P&amp;Ls, and spent decades building and operating commercial software at scale. That's the lens we bring to your agents — pragmatic, outcome-focused, built to last.
+      </p>
+      <div class="credentials" style="margin-top:48px;">
+        {creds.map((c) => (
+          <div class="cred">
+            <div class="big" set:html={c.big} />
+            <div class="lbl">{c.lbl}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why { padding: 140px 40px; }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .why blockquote {
+    margin: 0;
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(36px, 4.2vw, 56px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .why blockquote em {
+    font-style: italic;
+    color: var(--amber-dark);
+    position: relative;
+  }
+
+  .credentials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .cred {
+    padding: 26px 0;
+    border-top: 1px solid var(--line);
+  }
+  .cred .big {
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .cred .lbl {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 960px) {
+    .why { padding: 80px 24px; }
+    .why-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>AI Agents</span><span class="dot"></span>
+    <span>RAG Systems</span><span class="dot"></span>
+    <span>Workflow Automation</span><span class="dot"></span>
+    <span>Integrations</span><span class="dot"></span>
+    <span>AI Consulting</span><span class="dot"></span>
+    <span>AI Agents</span><span class="dot"></span>
+    <span>RAG Systems</span><span class="dot"></span>
+    <span>Workflow Automation</span><span class="dot"></span>
+    <span>Integrations</span><span class="dot"></span>
+    <span>AI Consulting</span><span class="dot"></span>
+  </div>
+</div>
+
+<style>
+  .marquee {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 26px 0;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 60px;
+    width: max-content;
+    animation: scroll-x 40s linear infinite;
+    white-space: nowrap;
+    align-items: center;
+  }
+  .marquee-track span {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .marquee-track .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--amber);
+    display: inline-block;
+  }
+</style>

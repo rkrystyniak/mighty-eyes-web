@@ -1,0 +1,43 @@
+---
+interface Props {
+  variant?: 'dark' | 'light';
+  animated?: boolean;
+}
+
+const { variant = 'dark', animated = false } = Astro.props;
+
+const stroke = variant === 'dark' ? '#0F1729' : '#F4F6FB';
+const iris = variant === 'dark' ? '#0F1729' : '#F4F6FB';
+const highlight = variant === 'dark' ? '#F4F6FB' : '#0F1729';
+---
+
+<span class="logo-mark">
+  <svg viewBox="0 0 34 22" fill="none">
+    <path
+      d="M1 11 C 6 3, 28 3, 33 11 C 28 19, 6 19, 1 11 Z"
+      stroke={stroke}
+      stroke-width="1.8"
+      fill="none"
+    />
+    <circle class={animated ? 'iris' : ''} cx="17" cy="11" r="5" fill={iris} />
+    <circle cx="19" cy="9" r="1.5" fill={highlight} />
+  </svg>
+</span>
+
+<style>
+  .logo-mark {
+    width: 34px;
+    height: 22px;
+    position: relative;
+    display: inline-block;
+  }
+  .logo-mark svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .logo-mark .iris {
+    transform-origin: center;
+    animation: iris-scan 6s ease-in-out infinite;
+  }
+</style>
